@@ -4,8 +4,10 @@ import ProductsCard from '../../Component/productsCard/ProductsCard'
 
 export default function AllProducts() {
   return (
-   <Layout>
-    <ProductsCard/>
-   </Layout>
+  <>
+  <ProductsCard/>
+  
+  </>
+   
   )
 }

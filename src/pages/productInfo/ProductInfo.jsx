@@ -14,7 +14,7 @@ export default function ProductInfo() {
   const [products, setProducts] = useState("");
   const params = useParams();
   // console.log(products.title)
-
+  const user=JSON.parse(localStorage.getItem('user'))
   const getProductData = async () => {
     setLoading(true);
     try {
@@ -42,7 +42,9 @@ export default function ProductInfo() {
     dispatch(addToCart(products));
     toast.success("add to cart");
   };
-
+  const addCartError=()=>{
+    toast.error("You need to login first")
+  }
   useEffect(() => {
     window.localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
@@ -171,12 +173,21 @@ export default function ProductInfo() {
                   <span className="title-font font-medium text-2xl text-gray-900">
                     ৳{products.price}
                   </span>
+                  {user ?
                   <button
-                    onClick={() => addCart(products)}
-                    className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
-                  >
-                    Add To Cart
-                  </button>
+                  onClick={() => addCart(products)}
+                  className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                >
+                  Add To Cart
+                </button> : 
+                <button
+                onClick={() => addCartError()}
+                className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+              >
+                Add To Cart
+              </button>
+                }
+                  
                   <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                     <svg
                       fill="currentColor"

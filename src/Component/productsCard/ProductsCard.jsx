@@ -6,6 +6,7 @@ import { addToCart } from "../../redux/CartSlice";
 
 
 export default function ProductsCard() {
+  const user=JSON.parse(localStorage.getItem('user'))
   const context = useContext(myContext);
   const {
     mode,
@@ -28,7 +29,9 @@ export default function ProductsCard() {
   useEffect(() => {
     window.localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
-
+  const addCartError=()=>{
+    toast.error("You need to login first")
+  }
   return (
     <div className="container px-5 py-8 md:py-16 mx-auto">
       <div className="lg:w-1/2 w-full mb-6 lg:mb-10">
@@ -48,7 +51,7 @@ export default function ProductsCard() {
           .slice(0, 8)
           .map((item, index) => (
             <div
-              onClick={() => (window.location.href = `/productinfo/${item.id}`)}
+              
               key={index}
               className="mr-5 bg-slate-100 m-1.5 w-[250px] border-2  border-solid border-slate-150 shadow-xl p-2.5 justify-center items-center h-[420px]  transition-shadow duration-300 ease-in-out  border-gray-200 border-opacity-60 rounded-2xl overflow-hidden "
               style={{
@@ -56,6 +59,7 @@ export default function ProductsCard() {
                 color: mode === "dark" ? "white" : "",
               }}
             >
+              <div onClick={() => (window.location.href = `/productinfo/${item.id}`)}>
               <div className="h-[220px] flex justify-center items-center">
                 <img
                   src={item.imageUrl}
@@ -75,14 +79,22 @@ export default function ProductsCard() {
                   </div>
                 </div>
                 </div>
+                </div>
                 <div>
+                  { user ?
                   <button
-                    className="bg-slate-100 w-full text-xl  text-blue-600 font-bold border-2 border-solid border-blue-500 p-1.5 mt-2.5 hover:bg-blue-600 hover:text-white rounded-2xl"
-                    onClick={() => addCart(item)}
-                  >
-                    Add to Cart
-                  </button>
-                
+                  className="bg-slate-100 w-full text-xl  text-blue-600 font-bold border-2 border-solid border-blue-500 p-1.5 mt-2.5 hover:bg-blue-600 hover:text-white rounded-2xl"
+                  onClick={() => addCart(item)}
+                >
+                  Add to Cart
+                </button> : 
+                <button
+                onClick={()=>addCartError()}
+                className="bg-slate-100 w-full text-xl  text-blue-600 font-bold border-2 border-solid border-blue-500 p-1.5 mt-2.5 hover:bg-blue-600 hover:text-white rounded-2xl"
+              >
+                Add to Cart
+              </button>
+                }
               </div>
             </div>
           ))}
